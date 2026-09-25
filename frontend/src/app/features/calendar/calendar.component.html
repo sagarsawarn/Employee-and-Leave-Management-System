@@ -1,0 +1,136 @@
+<div class="calendar">
+  <div class="cal-header flex items-center justify-between">
+    <h1 class="page-title">Team Leave Calendar</h1>
+    <div class="cal-controls flex items-center gap-2">
+      @if (isManager) {
+        <select
+          class="form-control dept-filter"
+          [value]="selectedDepartment() ?? ''"
+          (change)="onDepartmentChange($any($event.target).value)"
+        >
+          <option value="">All departments</option>
+          @for (d of departments(); track d.id) {
+            <option [value]="d.id">{{ d.name }}</option>
+          }
+        </select>
+      }
+      <button class="btn" (click)="today()">Today</button>
+    </div>
+  </div>
+
+  <div class="cal-nav flex items-center justify-between">
+    <button class="btn" (click)="prevMonth()">‹ Prev</button>
+    <strong class="cal-month">{{ monthLabel() }}</strong>
+    <button class="btn" (click)="nextMonth()">Next ›</button>
+  </div>
+
+  @if (error()) {
+    <app-alert type="error">{{ error() }}</app-alert>
+  }
+
+  @if (loading()) {
+    <div class="state"><app-spinner label="Loading calendar…" /></div>
+  } @else {
+    <div class="card cal-card">
+      <div class="cal-grid cal-weekdays">
+        @for (w of weekdayLabels; track w) {
+          <div class="cal-weekday">{{ w }}</div>
+        }
+      </div>
+
+      @for (week of weeks(); track $index) {
+        <div class="cal-grid">
+          @for (cell of week; track cell.date) {
+            <button
+              type="button"
+              class="cal-cell"
+              [class.out-month]="!cell.inMonth"
+              [class.weekend]="cell.isWeekend"
+              [class.today]="cell.isToday"
+              [class.has-holiday]="cell.holidayName"
+              (click)="selectCell(cell)"
+            >
+              <span class="cal-daynum">{{ cell.day }}</span>
+              @if (cell.holidayName) {
+                <span class="cal-holiday-chip" [title]="cell.holidayName">{{ cell.holidayName }}</span>
+              }
+              @if (cell.offCount > 0) {
+                <span class="cal-off-badge">{{ cell.offCount }} off</span>
+              }
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Day detail: who is off (availability, no reasons) -->
+    @if (selectedCell(); as cell) {
+      <div class="card cal-detail">
+        <h3 class="detail-title">{{ cell.date }}</h3>
+        @if (cell.holidayName) {
+          <div class="holiday-banner">
+            <span class="holiday-icon">🏖️</span>
+            <div>
+              <div class="holiday-label">Public Holiday</div>
+              <div class="holiday-name">{{ cell.holidayName }}</div>
+              @if (cell.holidayDescription) {
+                <p class="holiday-desc">{{ cell.holidayDescription }}</p>
+              }
+            </div>
+          </div>
+        }
+        @if (cell.people.length === 0) {
+          <p class="text-muted">No one is on leave this day.</p>
+        } @else {
+          <p class="text-muted">{{ cell.people.length }} on leave:</p>
+          <ul class="detail-list">
+            @for (p of cell.people; track p.id) {
+              <li>
+                <strong>{{ p.employee_name }}</strong>
+                @if (p.department_name) { <span class="text-muted"> · {{ p.department_name }}</span> }
+                <span class="badge badge-approved">{{ p.leave_type_name }}</span>
+              </li>
+            }
+          </ul>
+        }
+
+        @if (canApply) {
+          <button class="btn btn-primary detail-apply" (click)="applyOn(cell.date)">
+            Apply for leave on this day
+          </button>
+        }
+      </div>
+    }
+
+    <!-- Holidays this month -->
+    @if (monthHolidays().length > 0) {
+      <div class="card holidays-card">
+        <h3 class="holidays-title">Holidays in {{ monthLabel() }}</h3>
+        <ul class="holidays-list">
+          @for (h of monthHolidays(); track h.id) {
+            <li class="holiday-row">
+              <div class="holiday-date">
+                <span class="hd-day">{{ h.holiday_date | date: 'd' }}</span>
+                <span class="hd-mon">{{ h.holiday_date | date: 'MMM' }}</span>
+              </div>
+              <div class="holiday-info">
+                <span class="holiday-row-name">{{ h.name }}</span>
+                <span class="holiday-row-dow text-muted">{{ h.holiday_date | date: 'EEEE' }}</span>
+              </div>
+              <span class="badge holiday-tag">Public Holiday</span>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+
+    @if (data(); as d) {
+      @if (d.holidays.length === 0 && d.leave.length === 0) {
+        <app-empty-state
+          title="Nothing scheduled"
+          message="No holidays or approved leave in this month for the current view."
+        />
+      }
+    }
+  }
+</div>

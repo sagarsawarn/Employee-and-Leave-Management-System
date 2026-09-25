@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["angular:styles/component:css;41edda2e20aaf4a67e953a2a1caece3502872a913db739ff081f5b9264b014b2;C:/xampp/htdocs/Employee Management/frontend/src/app/shared/components/field-error.component.ts"],
+  "sourcesContent": ["\n      .field-error {\n        margin-top: var(--space-1);\n        font-size: 0.8rem;\n      }\n    "],
+  "mappings": ";AACM,CAAC;AACC,cAAY,IAAI;AAChB,aAAW;AACb;",
+  "names": []
+}

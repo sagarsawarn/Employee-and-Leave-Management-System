@@ -1,0 +1,74 @@
+<section class="registrations">
+  <div class="registrations-header">
+    <div>
+      <p class="eyebrow">Administrator</p>
+      <h1 class="page-title">New registrations</h1>
+      <p class="text-muted">Review access requests before allowing sign-in.</p>
+    </div>
+    <button class="btn" type="button" (click)="load()" [disabled]="loading()">
+      Refresh
+    </button>
+  </div>
+
+  @if (error()) {
+    <div class="alert alert-danger" role="alert">{{ error() }}</div>
+  }
+  @if (success()) {
+    <div class="alert alert-success" role="status">{{ success() }}</div>
+  }
+
+  @if (loading()) {
+    <div class="card state">Loading registrations...</div>
+  } @else if (requests().length === 0) {
+    <div class="card state">
+      <h2>No pending registrations</h2>
+      <p class="text-muted">New access requests will appear here.</p>
+    </div>
+  } @else {
+    <div class="card table-card">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Applicant</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Designation</th>
+            <th>Requested</th>
+            <th>Status</th>
+            <th class="actions-col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (request of requests(); track request.id) {
+            <tr>
+              <td>{{ request.full_name }}</td>
+              <td>{{ request.email }}</td>
+              <td>{{ request.department_name || '—' }}</td>
+              <td>{{ request.designation_title || '—' }}</td>
+              <td>{{ request.created_at | date: 'mediumDate' }}</td>
+              <td><span class="badge badge-pending">{{ request.status }}</span></td>
+              <td class="actions-col action-buttons">
+                <button
+                  class="btn btn-primary"
+                  type="button"
+                  (click)="approve(request)"
+                  [disabled]="actionId() === request.id"
+                >
+                  Approve
+                </button>
+                <button
+                  class="btn btn-danger"
+                  type="button"
+                  (click)="remove(request)"
+                  [disabled]="actionId() === request.id"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

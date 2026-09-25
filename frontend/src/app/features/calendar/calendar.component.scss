@@ -1,0 +1,259 @@
+.page-title {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.cal-header {
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.dept-filter {
+  max-width: 220px;
+}
+
+.cal-nav {
+  margin-bottom: var(--space-4);
+}
+.cal-month {
+  font-size: 1.1rem;
+}
+
+.state {
+  padding: var(--space-6);
+  display: flex;
+  justify-content: center;
+}
+
+.cal-card {
+  padding: var(--space-2);
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--space-1);
+}
+
+.cal-weekdays {
+  margin-bottom: var(--space-1);
+}
+.cal-weekday {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  padding: var(--space-1) 0;
+}
+
+.cal-cell {
+  min-height: 84px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  padding: var(--space-1) var(--space-2);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+}
+.cal-cell:hover {
+  border-color: var(--color-primary);
+}
+.cal-cell.out-month {
+  background: var(--color-bg);
+  color: var(--color-muted);
+}
+.cal-cell.weekend {
+  background: #f8fafc;
+}
+.cal-cell.today {
+  border-color: var(--color-primary);
+  box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+.cal-cell.has-holiday {
+  background: #fff7ed;                 /* soft warm tint */
+  border-color: #fed7aa;
+}
+.cal-cell.has-holiday .cal-daynum {
+  color: #c2410c;                      /* highlight the date number */
+}
+
+.cal-daynum {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+/* Holiday name shown inside the cell. Clamps to 2 lines so long names
+   don't blow out the cell height; full name is on the title tooltip. */
+.cal-holiday-chip {
+  align-self: stretch;
+  font-size: 0.64rem;
+  font-weight: 600;
+  color: #9a3412;
+  background: #ffedd5;
+  border: 1px solid #fed7aa;
+  border-radius: 4px;
+  padding: 1px 5px;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.cal-off-badge {
+  margin-top: auto;
+  font-size: 0.68rem;
+  font-weight: 600;
+  background: #dbeafe;
+  color: var(--color-primary);
+  border-radius: 999px;
+  padding: 1px 8px;
+}
+
+.cal-detail {
+  margin-top: var(--space-4);
+}
+.detail-title {
+  margin: 0 0 var(--space-2);
+  font-size: 1rem;
+}
+/* Holiday banner inside the day-detail popup. */
+.holiday-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  background: linear-gradient(135deg, #fff7ed, #ffedd5);
+  border: 1px solid #fed7aa;
+  border-radius: var(--radius);
+  padding: var(--space-3);
+  margin: 0 0 var(--space-3);
+}
+.holiday-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  margin-top: 0.15rem;
+}
+.holiday-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #c2410c;
+}
+.holiday-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+.holiday-desc {
+  margin: var(--space-2) 0 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--color-muted);
+}
+
+/* "Holidays in <Month>" list card below the grid. */
+.holidays-card {
+  margin-top: var(--space-4);
+}
+.holidays-title {
+  margin: 0 0 var(--space-3);
+  font-size: 1.05rem;
+}
+.holidays-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.holiday-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.holiday-row:last-child {
+  border-bottom: none;
+}
+.holiday-date {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius);
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.hd-day {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #c2410c;
+}
+.hd-mon {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  color: #9a3412;
+}
+.holiday-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+.holiday-row-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.holiday-row-dow {
+  font-size: 0.8rem;
+}
+.holiday-tag {
+  background: #ffedd5;
+  color: #c2410c;
+  flex-shrink: 0;
+}
+.detail-list {
+  list-style: none;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+}
+.detail-list li {
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+.detail-list li:last-child {
+  border-bottom: none;
+}
+
+.detail-apply {
+  margin-top: var(--space-4);
+}
+
+@media (max-width: 640px) {
+  .cal-cell {
+    min-height: 60px;
+  }
+  /* Hide the chip label on very small cells; the warm cell tint still
+     signals a holiday, and the day-detail popup shows the name. */
+  .cal-holiday-chip {
+    display: none;
+  }
+  .holiday-tag {
+    display: none;
+  }
+}

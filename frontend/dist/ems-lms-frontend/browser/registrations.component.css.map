@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/features/registrations/registrations.component.scss"],
+  "sourcesContent": [".page-title {\n  margin: 0 0 var(--space-1);\n  font-size: 1.4rem;\n}\n\n.state {\n  padding: var(--space-6);\n  display: flex;\n  justify-content: center;\n}\n\n.table-card {\n  padding: 0;\n  overflow-x: auto;\n  margin-top: var(--space-4);\n}\n\n.right {\n  text-align: right;\n  white-space: nowrap;\n}\n.right .btn {\n  margin-left: var(--space-2);\n}\n"],
+  "mappings": ";AAAA,CAAA;AACE,UAAA,EAAA,EAAA,IAAA;AACA,aAAA;;AAGF,CAAA;AACE,WAAA,IAAA;AACA,WAAA;AACA,mBAAA;;AAGF,CAAA;AACE,WAAA;AACA,cAAA;AACA,cAAA,IAAA;;AAGF,CAAA;AACE,cAAA;AACA,eAAA;;AAEF,CAJA,MAIA,CAAA;AACE,eAAA,IAAA;;",
+  "names": []
+}

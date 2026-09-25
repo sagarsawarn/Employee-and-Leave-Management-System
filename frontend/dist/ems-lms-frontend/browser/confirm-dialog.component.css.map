@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["angular:styles/component:css;eddc3b0dbc883eb3c8d2b133a25a87b02dadf9e95186e8b9823ce1b5c3e6f29f;C:/xampp/htdocs/Employee Management/frontend/src/app/shared/components/confirm-dialog.component.ts"],
+  "sourcesContent": ["\n      .backdrop {\n        position: fixed;\n        inset: 0;\n        background: rgba(15, 23, 42, 0.5);\n        display: flex;\n        align-items: center;\n        justify-content: center;\n        z-index: 1000;\n        padding: var(--space-4);\n      }\n      .dialog {\n        background: var(--color-surface);\n        border-radius: var(--radius);\n        padding: var(--space-5);\n        max-width: 400px;\n        width: 100%;\n        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);\n      }\n      .dialog-title {\n        margin: 0 0 var(--space-2);\n        font-size: 1.1rem;\n      }\n      .dialog-message {\n        margin: 0 0 var(--space-5);\n        font-size: 0.9rem;\n      }\n      .dialog-actions {\n        display: flex;\n        justify-content: flex-end;\n        gap: var(--space-2);\n      }\n    "],
+  "mappings": ";AACM,CAAC;AACC,YAAU;AACV,SAAO;AACP,cAAY,KAAK,EAAE,EAAE,EAAE,EAAE,EAAE,EAAE;AAC7B,WAAS;AACT,eAAa;AACb,mBAAiB;AACjB,WAAS;AACT,WAAS,IAAI;AACf;AACA,CAAC;AACC,cAAY,IAAI;AAChB,iBAAe,IAAI;AACnB,WAAS,IAAI;AACb,aAAW;AACX,SAAO;AACP,cAAY,EAAE,KAAK,KAAK,KAAK,CAAC,EAAE,CAAC,EAAE,CAAC,EAAE;AACxC;AACA,CAAC;AACC,UAAQ,EAAE,EAAE,IAAI;AAChB,aAAW;AACb;AACA,CAAC;AACC,UAAQ,EAAE,EAAE,IAAI;AAChB,aAAW;AACb;AACA,CAAC;AACC,WAAS;AACT,mBAAiB;AACjB,OAAK,IAAI;AACX;",
+  "names": []
+}

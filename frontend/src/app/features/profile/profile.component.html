@@ -1,0 +1,275 @@
+<div class="profile">
+  @if (loading()) {
+    <div class="state"><app-spinner label="Loading profile…" /></div>
+  } @else if (error()) {
+    <app-alert type="error">{{ error() }}</app-alert>
+  } @else if (data(); as p) {
+
+    <!-- Header -->
+    <div class="card profile-header">
+      <div class="avatar">{{ (p.employee.first_name || '?').charAt(0) }}{{ (p.employee.last_name || '').charAt(0) }}</div>
+      <div class="header-main">
+        <h1 class="emp-name">{{ p.employee.first_name }} {{ p.employee.last_name }}</h1>
+        <div class="emp-meta text-muted">
+          <span>{{ p.employee.employee_code }}</span>
+          <span>· {{ p.employee.designation_title || 'No designation' }}</span>
+          <span>· {{ p.employee.department_name || 'No department' }}</span>
+        </div>
+        <div class="emp-meta">
+          <span class="badge" [class.badge-approved]="p.employee.status === 'active'"
+                              [class.badge-cancelled]="p.employee.status === 'inactive'">
+            {{ p.employee.status }}
+          </span>
+          <span class="text-muted">Joined {{ p.employee.date_of_joining }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary cards -->
+    <div class="summary-grid">
+      <div class="card sc"><span class="sc-num">{{ p.summary.approved_leave_count }}</span><span class="sc-label">Approved leave</span></div>
+      <div class="card sc"><span class="sc-num">{{ p.summary.available_leave_days }}</span><span class="sc-label">Available days</span></div>
+      <div class="card sc"><span class="sc-num">{{ p.summary.pending_leave_count }}</span><span class="sc-label">Pending</span></div>
+      <div class="card sc"><span class="sc-num">{{ p.summary.rejected_leave_count }}</span><span class="sc-label">Rejected</span></div>
+      <div class="card sc"><span class="sc-num sc-small">{{ p.summary.employment_duration || '—' }}</span><span class="sc-label">Tenure</span></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab" [class.active]="activeTab() === 'overview'" (click)="setTab('overview')">Overview</button>
+      <button class="tab" [class.active]="activeTab() === 'leave'" (click)="setTab('leave')">Leave</button>
+      <button class="tab" [class.active]="activeTab() === 'skills'" (click)="setTab('skills')">Skills</button>
+      <button class="tab" [class.active]="activeTab() === 'activity'" (click)="setTab('activity')">Activity</button>
+      <button class="tab" [class.active]="activeTab() === 'personal'" (click)="setTab('personal')">Personal</button>
+    </div>
+
+    <!-- OVERVIEW -->
+    @if (activeTab() === 'overview') {
+      <div class="card section">
+        <h3 class="section-title">Employment</h3>
+        <dl class="info-grid">
+          <div><dt>Employee code</dt><dd>{{ p.employee.employee_code }}</dd></div>
+          <div><dt>Department</dt><dd>{{ p.employee.department_name || '—' }}</dd></div>
+          <div><dt>Designation</dt><dd>{{ p.employee.designation_title || '—' }}</dd></div>
+          <div><dt>Joining date</dt><dd>{{ p.employee.date_of_joining }}</dd></div>
+          <div><dt>Employment type</dt><dd>{{ p.personal_information?.employment_type || '—' }}</dd></div>
+          <div><dt>Work location</dt><dd>{{ p.personal_information?.work_location || '—' }}</dd></div>
+          <div><dt>Status</dt><dd>{{ p.employee.status }}</dd></div>
+        </dl>
+      </div>
+
+      <div class="card section">
+        <h3 class="section-title">
+          Attendance
+          @if (p.attendance_summary.present_days != null) {
+            <span class="text-muted attendance-count">· {{ p.attendance_summary.present_days }} present days</span>
+          }
+        </h3>
+        @if (!p.attendance_summary.available) {
+          <app-empty-state title="Not available" [message]="p.attendance_summary.message || 'Attendance not tracked.'" />
+        } @else if (!p.attendance_summary.history || p.attendance_summary.history.length === 0) {
+          <app-empty-state title="No attendance yet" message="No check-in records for this employee." />
+        } @else {
+          <table class="table">
+            <thead>
+              <tr><th>Date</th><th>Check in</th><th>Check out</th><th>Hours</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              @for (a of p.attendance_summary.history; track a.id) {
+                <tr>
+                  <td>{{ a.work_date }}</td>
+                  <td>{{ a.check_in ? (a.check_in | date: 'h:mm a') : '—' }}</td>
+                  <td>{{ a.check_out ? (a.check_out | date: 'h:mm a') : '—' }}</td>
+                  <td>{{ a.work_hours ?? '—' }}</td>
+                  <td><span class="badge badge-approved">{{ a.status }}</span></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      </div>
+    }
+
+    <!-- LEAVE -->
+    @if (activeTab() === 'leave') {
+      <div class="card section">
+        <h3 class="section-title">Leave balances</h3>
+        @if (p.leave_summary.balances.length === 0) {
+          <app-empty-state title="No balances" message="No leave balances allocated." />
+        } @else {
+          <table class="table">
+            <thead><tr><th>Type</th><th>Allocated</th><th>Used</th><th>Remaining</th></tr></thead>
+            <tbody>
+              @for (b of p.leave_summary.balances; track b.id) {
+                <tr><td>{{ b.leave_type_name }}</td><td>{{ b.allocated_days }}</td><td>{{ b.used_days }}</td><td><strong>{{ b.remaining_days }}</strong></td></tr>
+              }
+            </tbody>
+          </table>
+        }
+      </div>
+      <div class="card section">
+        <h3 class="section-title">Recent leave</h3>
+        @if (p.leave_summary.recent.length === 0) {
+          <app-empty-state title="No leave history" message="No leave requests yet." />
+        } @else {
+          <table class="table">
+            <thead><tr><th>Type</th><th>From</th><th>To</th><th>Days</th><th>Status</th></tr></thead>
+            <tbody>
+              @for (a of p.leave_summary.recent; track a.id) {
+                <tr>
+                  <td>{{ a.leave_type_name }}</td><td>{{ a.start_date }}</td><td>{{ a.end_date }}</td><td>{{ a.total_days }}</td>
+                  <td><span [class]="'badge badge-' + a.status">{{ a.status }}</span></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      </div>
+    }
+
+    <!-- SKILLS -->
+    @if (activeTab() === 'skills') {
+      <div class="card section">
+        <h3 class="section-title">Skills</h3>
+        @if (skillError()) { <app-alert type="error">{{ skillError() }}</app-alert> }
+
+        <form class="skill-form" [formGroup]="skillForm" (ngSubmit)="submitSkill()">
+          <input class="form-control" formControlName="name" placeholder="Skill name" />
+          <select class="form-control" formControlName="level">
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+            <option value="expert">Expert</option>
+          </select>
+          <input class="form-control" type="number" step="0.5" min="0" formControlName="years_experience" placeholder="Years" />
+          <button type="submit" class="btn btn-primary">{{ editingSkillId() ? 'Update' : 'Add' }}</button>
+          @if (editingSkillId()) {
+            <button type="button" class="btn" (click)="startAddSkill()">Cancel</button>
+          }
+        </form>
+
+        @if (data()!.skills.length === 0) {
+          <app-empty-state title="No skills yet" message="Add the first skill above." />
+        } @else {
+          <table class="table">
+            <thead><tr><th>Skill</th><th>Level</th><th>Years</th><th class="right">Actions</th></tr></thead>
+            <tbody>
+              @for (s of data()!.skills; track s.id) {
+                <tr>
+                  <td>{{ s.name }}</td><td>{{ s.level }}</td><td>{{ s.years_experience ?? '—' }}</td>
+                  <td class="right">
+                    <button class="btn" (click)="startEditSkill(s)">Edit</button>
+                    <button class="btn btn-danger" (click)="askDeleteSkill(s)">Delete</button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      </div>
+    }
+
+    <!-- ACTIVITY -->
+    @if (activeTab() === 'activity') {
+      <div class="card section">
+        <h3 class="section-title">Activity timeline</h3>
+        @if (p.recent_activities.items.length === 0) {
+          <app-empty-state title="No activity" message="No recorded activity yet." />
+        } @else {
+          <ul class="timeline">
+            @for (act of p.recent_activities.items; track act.id) {
+              <li>
+                <div class="tl-desc">{{ act.description }}</div>
+                <div class="tl-meta text-muted">
+                  {{ act.created_at }}
+                  @if (act.actor_email) { · by {{ act.actor_email }} }
+                </div>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    }
+
+    <!-- PERSONAL -->
+    @if (activeTab() === 'personal') {
+      <div class="card section">
+        <h3 class="section-title">Personal information</h3>
+        @if (personalSuccess()) { <app-alert type="success">{{ personalSuccess() }}</app-alert> }
+        @if (personalError()) { <app-alert type="error">{{ personalError() }}</app-alert> }
+
+        <form class="grid-2" [formGroup]="personalForm" (ngSubmit)="savePersonal()">
+          <div class="form-group">
+            <label class="form-label">Date of birth</label>
+            <input type="date" class="form-control" formControlName="date_of_birth" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Gender</label>
+            <select class="form-control" formControlName="gender">
+              <option value="">—</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+              <option value="undisclosed">Prefer not to say</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Employment type</label>
+            <select class="form-control" formControlName="employment_type">
+              <option value="">—</option>
+              <option value="full_time">Full time</option>
+              <option value="part_time">Part time</option>
+              <option value="contract">Contract</option>
+              <option value="intern">Intern</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Work location</label>
+            <input class="form-control" formControlName="work_location" />
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Address</label>
+            <input class="form-control" formControlName="address" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Emergency contact name</label>
+            <input class="form-control" formControlName="emergency_contact_name" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Emergency contact phone</label>
+            <input
+              class="form-control"
+              type="tel"
+              inputmode="numeric"
+              maxlength="10"
+              placeholder="10-digit number"
+              formControlName="emergency_contact_phone"
+              (keypress)="$any($event).charCode < 48 || $any($event).charCode > 57 ? $event.preventDefault() : null"
+              (input)="onPhoneInput($event)"
+              [class.is-invalid]="personalForm.controls.emergency_contact_phone.invalid && personalForm.controls.emergency_contact_phone.touched"
+            />
+            @if (personalForm.controls.emergency_contact_phone.touched && personalForm.controls.emergency_contact_phone.errors?.['pattern']) {
+              <div class="text-danger field-error">Emergency contact must be exactly 10 digits.</div>
+            }
+          </div>
+          <div class="form-group">
+            <label class="form-label">Joining date</label>
+            <input type="date" class="form-control" formControlName="date_of_joining" />
+          </div>
+          <div class="full">
+            <button type="submit" class="btn btn-primary">Save personal info</button>
+          </div>
+        </form>
+      </div>
+    }
+  }
+
+  <app-confirm-dialog
+    [open]="confirmOpen()"
+    title="Delete skill?"
+    message="This will remove the skill from the profile."
+    confirmLabel="Delete"
+    (confirm)="confirmDeleteSkill()"
+    (cancel)="cancelDeleteSkill()"
+  />
+</div>

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/features/employees/employee-form.component.scss"],
+  "sourcesContent": [".page-title {\n  margin: 0;\n  font-size: 1.4rem;\n}\n\n.header {\n  margin-bottom: var(--space-4);\n}\n\n.state {\n  padding: var(--space-6);\n  display: flex;\n  justify-content: center;\n}\n\n.form-card {\n  max-width: 760px;\n}\n\n.grid-2 {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: var(--space-4);\n}\n\n@media (max-width: 640px) {\n  .grid-2 {\n    grid-template-columns: 1fr;\n  }\n}\n\n.divider {\n  border: none;\n  border-top: 1px solid var(--color-border);\n  margin: var(--space-4) 0;\n}\n\n.section-title {\n  margin: 0 0 var(--space-3);\n  font-size: 1rem;\n}\n\n.actions {\n  display: flex;\n  justify-content: flex-end;\n  gap: var(--space-2);\n  margin-top: var(--space-4);\n}\n"],
+  "mappings": ";AAAA,CAAA;AACE,UAAA;AACA,aAAA;;AAGF,CAAA;AACE,iBAAA,IAAA;;AAGF,CAAA;AACE,WAAA,IAAA;AACA,WAAA;AACA,mBAAA;;AAGF,CAAA;AACE,aAAA;;AAGF,CAAA;AACE,WAAA;AACA,yBAAA,IAAA;AACA,OAAA,IAAA;;AAGF,QAAA,WAAA;AACE,GAPF;AAQI,2BAAA;;;AAIJ,CAAA;AACE,UAAA;AACA,cAAA,IAAA,MAAA,IAAA;AACA,UAAA,IAAA,WAAA;;AAGF,CAAA;AACE,UAAA,EAAA,EAAA,IAAA;AACA,aAAA;;AAGF,CAAA;AACE,WAAA;AACA,mBAAA;AACA,OAAA,IAAA;AACA,cAAA,IAAA;;",
+  "names": []
+}

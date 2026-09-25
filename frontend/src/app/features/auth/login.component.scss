@@ -1,0 +1,108 @@
+.login-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 380px;
+}
+
+.login-title {
+  margin: 0 0 var(--space-1);
+  font-size: 1.25rem;
+}
+
+.login-sub {
+  margin: 0 0 var(--space-5);
+  font-size: 0.9rem;
+}
+
+.field-error {
+  margin-top: var(--space-1);
+  font-size: 0.8rem;
+}
+
+.alert {
+  padding: var(--space-3);
+  border-radius: var(--radius);
+  margin-bottom: var(--space-4);
+  font-size: 0.9rem;
+}
+
+.alert-danger {
+  background: #fee2e2;
+  color: var(--color-danger);
+  border: 1px solid #fecaca;
+}
+
+.alert-success {
+  background: #dcfce7;
+  color: var(--color-success);
+  border: 1px solid #bbf7d0;
+}
+
+.alt-link {
+  margin: var(--space-4) 0 0;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.alt-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: var(--space-4) 0;
+  color: var(--color-muted);
+  font-size: 0.8rem;
+}
+.alt-divider::before,
+.alt-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--color-border);
+}
+.alt-divider span {
+  padding: 0 var(--space-3);
+}
+
+.create-account-btn {
+  text-decoration: none;
+}
+.create-account-btn:hover {
+  text-decoration: none;
+  background: var(--color-bg);
+}
+
+.admin-login-link {
+  display: block;
+  margin-top: var(--space-3);
+  text-align: center;
+  color: var(--color-muted);
+  font-size: 0.8rem;
+}
+
+.admin-login-btn {
+  margin-top: var(--space-2);
+  background: #0f172a;
+  color: #fff;
+  border-color: #0f172a;
+}
+.admin-login-btn:hover {
+  text-decoration: none;
+  background: #1e293b;
+}
+
+.hr-login-btn {
+  margin-top: var(--space-2);
+  background: #0d9488;
+  color: #fff;
+  border-color: #0d9488;
+}
+.hr-login-btn:hover {
+  text-decoration: none;
+  background: #0f766e;
+}

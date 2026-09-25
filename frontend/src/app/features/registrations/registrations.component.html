@@ -1,0 +1,70 @@
+<div class="registrations">
+  <h1 class="page-title">Registration requests</h1>
+  <p class="text-muted">Approve to create an employee account, or reject the request.</p>
+
+  @if (success()) {
+    <app-alert type="success">{{ success() }}</app-alert>
+  }
+  @if (error()) {
+    <app-alert type="error">{{ error() }}</app-alert>
+  }
+
+  @if (loading()) {
+    <div class="state"><app-spinner label="Loading requests…" /></div>
+  } @else {
+    @if (items().length === 0) {
+      <app-empty-state
+        title="No pending requests"
+        message="New self-registrations will appear here for review."
+      />
+    } @else {
+      <div class="card table-card">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Department</th>
+              <th>Designation</th>
+              <th>Requested</th>
+              <th class="right">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (reg of items(); track reg.id) {
+              <tr>
+                <td>{{ reg.full_name }}</td>
+                <td>{{ reg.email }}</td>
+                <td>
+                  <span class="badge" [class.badge-approved]="reg.requested_role === 'hr_manager'">
+                    {{ reg.requested_role === 'hr_manager' ? 'HR Manager' : 'Employee' }}
+                  </span>
+                </td>
+                <td>{{ reg.department_name || '—' }}</td>
+                <td>{{ reg.designation_title || '—' }}</td>
+                <td>{{ reg.created_at }}</td>
+                <td class="right">
+                  <button
+                    class="btn btn-primary"
+                    [disabled]="busyId() === reg.id"
+                    (click)="approve(reg)"
+                  >
+                    {{ busyId() === reg.id ? 'Working…' : 'Approve' }}
+                  </button>
+                  <button
+                    class="btn btn-danger"
+                    [disabled]="busyId() === reg.id"
+                    (click)="reject(reg)"
+                  >
+                    Reject
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</div>

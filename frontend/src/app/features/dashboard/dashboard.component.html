@@ -1,0 +1,145 @@
+<div class="dashboard">
+  <div class="dashboard-header flex items-center justify-between">
+    <div>
+      <h1 class="page-title">Dashboard</h1>
+      @if (user(); as u) {
+        <p class="text-muted">Welcome back, {{ u.email }}.</p>
+      }
+    </div>
+    <div class="live-clock" aria-live="off">
+      <span class="clock-time">{{ now() | date: 'h:mm:ss a' }}</span>
+      <span class="clock-date text-muted">{{ now() | date: 'EEEE, MMMM d, y' }}</span>
+    </div>
+  </div>
+
+  <!-- Attendance IN/OUT (employees) -->
+  @if (isEmployee()) {
+    <div class="card attendance-panel">
+      <div class="att-info">
+        <h3 class="att-title">Attendance</h3>
+        @if (todayAttendance(); as a) {
+          <p class="text-muted att-status">
+            @if (a.check_in) { In: {{ a.check_in | date: 'h:mm a' }} } @else { Not checked in }
+            @if (a.check_out) { · Out: {{ a.check_out | date: 'h:mm a' }} }
+            @if (a.work_hours != null) { · {{ a.work_hours }} hrs }
+          </p>
+        } @else {
+          <p class="text-muted att-status">You haven't checked in today.</p>
+        }
+        @if (attendanceError()) {
+          <p class="text-danger att-status">{{ attendanceError() }}</p>
+        }
+      </div>
+      <div class="att-actions">
+        <button
+          class="btn btn-primary"
+          [disabled]="attendanceBusy() || (todayAttendance()?.check_in)"
+          (click)="checkIn()"
+        >
+          IN
+        </button>
+        <button
+          class="btn btn-danger"
+          [disabled]="attendanceBusy() || !todayAttendance()?.check_in || todayAttendance()?.check_out"
+          (click)="checkOut()"
+        >
+          OUT
+        </button>
+      </div>
+    </div>
+  }
+
+  <div class="grid">
+    <a class="card tile" routerLink="/leave">
+      <h3 class="tile-title">Leave</h3>
+      <p class="text-muted">Apply for leave and view your balances.</p>
+    </a>
+
+    <a class="card tile" routerLink="/tasks">
+      <h3 class="tile-title">{{ isManager() ? 'Task assignments' : 'My tasks' }}</h3>
+      <p class="text-muted">{{ isManager() ? 'Assign and manage employee tasks.' : 'View and update your assigned work.' }}</p>
+    </a>
+
+    @if (isManager()) {
+      <a class="card tile" routerLink="/employees">
+        <h3 class="tile-title">Employees</h3>
+        <p class="text-muted">Manage employee records.</p>
+      </a>
+
+      <a class="card tile" routerLink="/employees/new">
+        <h3 class="tile-title">Add employee</h3>
+        <p class="text-muted">Create a new employee profile.</p>
+      </a>
+    }
+  </div>
+
+  @if (isManager()) {
+    <section class="card on-leave-panel">
+      <h2 class="section-title">Who's on leave</h2>
+      @if (onLeaveLoading()) {
+        <app-spinner label="Loading…" />
+      } @else if (onLeave().length === 0) {
+        <app-empty-state
+          title="No one is on leave"
+          message="Approved current and upcoming leave will show here."
+        />
+      } @else {
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Type</th>
+              <th>From</th>
+              <th>To</th>
+              <th>Days</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of onLeave(); track row.id) {
+              <tr>
+                <td>{{ row.employee_name }} <span class="text-muted">({{ row.employee_code }})</span></td>
+                <td>{{ row.leave_type_name }}</td>
+                <td>{{ row.start_date }}</td>
+                <td>{{ row.end_date }}</td>
+                <td>{{ row.total_days }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </section>
+  }
+
+  @if (role() === 'employee') {
+    <section class="card dashboard-leave">
+      <h2 class="section-title">Leave summary</h2>
+      @if (balances().length === 0) {
+        <p class="text-muted">Your leave balance is not available yet.</p>
+      } @else {
+        <div class="leave-balance-grid">
+          @for (balance of balances(); track balance.id) {
+            <div>
+              <span class="text-muted">{{ balance.leave_type_name }}</span>
+              <strong>{{ balance.remaining_days }} days remaining</strong>
+            </div>
+          }
+        </div>
+      }
+
+      <h3 class="subsection-title">Approved leave</h3>
+      @if (approvedLeaves().length === 0) {
+        <p class="text-muted">No approved leave requests.</p>
+      } @else {
+        <div class="approved-leave-list">
+          @for (application of approvedLeaves(); track application.id) {
+            <div class="approved-leave-row">
+              <span>{{ application.leave_type_name }}</span>
+              <span>{{ application.start_date }} to {{ application.end_date }}</span>
+              <span class="badge badge-approved">Approved</span>
+            </div>
+          }
+        </div>
+      }
+    </section>
+  }
+</div>

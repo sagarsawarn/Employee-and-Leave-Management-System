@@ -1,0 +1,107 @@
+<div class="employees">
+  <div class="flex items-center justify-between header">
+    <h1 class="page-title">Employees</h1>
+    <a class="btn btn-primary" routerLink="/employees/new">Add employee</a>
+  </div>
+
+  <div class="toolbar">
+    <input
+      class="form-control search"
+      type="search"
+      placeholder="Search by name or code…"
+      [formControl]="search"
+    />
+  </div>
+
+  <!-- Error state -->
+  @if (error()) {
+    <app-alert type="error">{{ error() }}</app-alert>
+  }
+
+  <!-- Loading state -->
+  @if (loading()) {
+    <div class="state"><app-spinner label="Loading employees…" /></div>
+  } @else {
+    @if (data(); as d) {
+    <!-- Empty state -->
+    @if (d.items.length === 0) {
+      <app-empty-state
+        title="No employees found"
+        message="Try a different search, or add a new employee."
+      >
+        <a class="btn btn-primary" routerLink="/employees/new">Add employee</a>
+      </app-empty-state>
+    } @else {
+      <div class="card table-card">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Department</th>
+              <th>Status</th>
+              <th class="actions-col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (emp of d.items; track emp.id) {
+              <tr>
+                <td>{{ emp.employee_code }}</td>
+                <td>{{ emp.first_name }} {{ emp.last_name }}</td>
+                <td>{{ emp.department_name || '—' }}</td>
+                <td>
+                  <span
+                    class="badge"
+                    [class.badge-approved]="emp.status === 'active'"
+                    [class.badge-cancelled]="emp.status === 'inactive'"
+                  >
+                    {{ emp.status }}
+                  </span>
+                </td>
+                <td class="actions-col">
+                  <button class="btn" (click)="viewProfile(emp)">View</button>
+                  <button class="btn btn-edit" (click)="edit(emp)">Edit</button>
+                  <button class="btn btn-danger" (click)="askDelete(emp)">
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <button
+          class="btn"
+          [disabled]="d.page <= 1"
+          (click)="goToPage(d.page - 1)"
+        >
+          Previous
+        </button>
+        <span class="text-muted page-info">
+          Page {{ d.page }} of {{ d.total_pages }} ({{ d.total }} total)
+        </span>
+        <button
+          class="btn"
+          [disabled]="d.page >= d.total_pages"
+          (click)="goToPage(d.page + 1)"
+        >
+          Next
+        </button>
+      </div>
+    }
+    }
+  }
+
+  <!-- Delete confirmation -->
+  <app-confirm-dialog
+    [open]="confirmOpen()"
+    title="Delete employee?"
+    message="This will deactivate the employee record. You can restore it later from the database."
+    confirmLabel="Delete"
+    (confirm)="confirmDelete()"
+    (cancel)="cancelDelete()"
+  />
+</div>

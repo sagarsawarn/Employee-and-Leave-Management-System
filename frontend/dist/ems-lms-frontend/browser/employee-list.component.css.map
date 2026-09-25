@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/features/employees/employee-list.component.scss"],
+  "sourcesContent": [".page-title {\n  margin: 0;\n  font-size: 1.4rem;\n}\n\n.header {\n  margin-bottom: var(--space-4);\n}\n\n.toolbar {\n  margin-bottom: var(--space-4);\n}\n\n.search {\n  max-width: 320px;\n}\n\n.state {\n  padding: var(--space-6);\n  display: flex;\n  justify-content: center;\n}\n\n.table-card {\n  padding: 0;\n  overflow-x: auto;\n}\n\n.actions-col {\n  text-align: right;\n  white-space: nowrap;\n}\n.actions-col .btn {\n  margin-left: var(--space-2);\n}\n\n/* Make Edit clearly visible next to the red Delete button (it was a plain\n   white-on-white .btn and blended into the table cell). */\n.btn-edit {\n  background: var(--color-primary);\n  color: #fff;\n  border-color: var(--color-primary);\n}\n.btn-edit:hover {\n  background: var(--color-primary-hover);\n}\n\n.pagination {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  gap: var(--space-4);\n  margin-top: var(--space-4);\n}\n\n.page-info {\n  font-size: 0.9rem;\n}\n"],
+  "mappings": ";AAAA,CAAA;AACE,UAAA;AACA,aAAA;;AAGF,CAAA;AACE,iBAAA,IAAA;;AAGF,CAAA;AACE,iBAAA,IAAA;;AAGF,CAAA;AACE,aAAA;;AAGF,CAAA;AACE,WAAA,IAAA;AACA,WAAA;AACA,mBAAA;;AAGF,CAAA;AACE,WAAA;AACA,cAAA;;AAGF,CAAA;AACE,cAAA;AACA,eAAA;;AAEF,CAJA,YAIA,CAAA;AACE,eAAA,IAAA;;AAKF,CAAA;AACE,cAAA,IAAA;AACA,SAAA;AACA,gBAAA,IAAA;;AAEF,CALA,QAKA;AACE,cAAA,IAAA;;AAGF,CAAA;AACE,WAAA;AACA,eAAA;AACA,mBAAA;AACA,OAAA,IAAA;AACA,cAAA,IAAA;;AAGF,CAAA;AACE,aAAA;;",
+  "names": []
+}

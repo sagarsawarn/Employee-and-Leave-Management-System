@@ -1,0 +1,149 @@
+<div class="leave">
+  <h1 class="page-title">Leave</h1>
+
+  @if (loading()) {
+    <div class="state"><app-spinner label="Loading leave data…" /></div>
+  } @else {
+    <div class="layout">
+      <!-- Apply for leave -->
+      <section class="card">
+        <h2 class="section-title">Apply for leave</h2>
+
+        @if (applySuccess()) {
+          <app-alert type="success">{{ applySuccess() }}</app-alert>
+        }
+        @if (applyError()) {
+          <app-alert type="error">{{ applyError() }}</app-alert>
+        }
+
+        <form [formGroup]="applyForm" (ngSubmit)="submitApply()" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="leave_type_id">Leave type</label>
+            <select id="leave_type_id" class="form-control" formControlName="leave_type_id">
+              <option [ngValue]="null">— Select —</option>
+              @for (t of types(); track t.id) {
+                <option [ngValue]="t.id">{{ t.name }}</option>
+              }
+            </select>
+            <app-field-error [control]="f.leave_type_id" label="Leave type" />
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label" for="start_date">Start date</label>
+              <input id="start_date" type="date" class="form-control" formControlName="start_date" />
+              <app-field-error [control]="f.start_date" label="Start date" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="end_date">End date</label>
+              <input id="end_date" type="date" class="form-control" formControlName="end_date" />
+              <app-field-error [control]="f.end_date" label="End date" />
+            </div>
+          </div>
+
+          @if (applyForm.errors?.['dateRange'] && f.end_date.touched) {
+            <div class="text-danger date-range-error">
+              End date cannot be before the start date.
+            </div>
+          }
+
+          <div class="form-group">
+            <label class="form-label" for="reason">Reason</label>
+            <textarea id="reason" class="form-control" rows="3" formControlName="reason"></textarea>
+            <app-field-error [control]="f.reason" label="Reason" />
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit application</button>
+        </form>
+      </section>
+
+      <!-- Balances -->
+      <section class="card">
+        <h2 class="section-title">My balances</h2>
+        @if (balances().length === 0) {
+          <app-empty-state title="No balances yet" message="Balances appear once allocated." />
+        } @else {
+          <table class="table">
+            <thead>
+              <tr><th>Type</th><th>Allocated</th><th>Used</th><th>Remaining</th></tr>
+            </thead>
+            <tbody>
+              @for (b of balances(); track b.id) {
+                <tr>
+                  <td>{{ b.leave_type_name || b.leave_type_id }}</td>
+                  <td>{{ b.allocated_days }}</td>
+                  <td>{{ b.used_days }}</td>
+                  <td><strong>{{ b.remaining_days }}</strong></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      </section>
+    </div>
+
+    <!-- My applications -->
+    <section class="card mt-4">
+      <h2 class="section-title">My applications</h2>
+      @if (actionError()) {
+        <app-alert type="error">{{ actionError() }}</app-alert>
+      }
+      @if (myApps().length === 0) {
+        <app-empty-state title="No applications" message="You haven't applied for leave yet." />
+      } @else {
+        <table class="table">
+          <thead>
+            <tr><th>Type</th><th>From</th><th>To</th><th>Days</th><th>Status</th><th></th></tr>
+          </thead>
+          <tbody>
+            @for (a of myApps(); track a.id) {
+              <tr>
+                <td>{{ a.leave_type_name || a.leave_type_id }}</td>
+                <td>{{ a.start_date }}</td>
+                <td>{{ a.end_date }}</td>
+                <td>{{ a.total_days }}</td>
+                <td><span [class]="badgeClass(a.status)">{{ a.status }}</span></td>
+                <td class="right">
+                  @if (a.status === 'pending') {
+                    <button class="btn" (click)="cancelApp(a)">Cancel</button>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </section>
+
+    <!-- Approvals queue: admin/HR only -->
+    @if (isManager()) {
+      <section class="card mt-4">
+        <h2 class="section-title">Pending approvals</h2>
+        @if (queue().length === 0) {
+          <app-empty-state title="Nothing to approve" message="No pending leave requests." />
+        } @else {
+          <table class="table">
+            <thead>
+              <tr><th>Employee</th><th>Type</th><th>From</th><th>To</th><th>Days</th><th class="right">Decision</th></tr>
+            </thead>
+            <tbody>
+              @for (a of queue(); track a.id) {
+                <tr>
+                  <td>{{ a.employee_name || a.employee_id }}</td>
+                  <td>{{ a.leave_type_name || a.leave_type_id }}</td>
+                  <td>{{ a.start_date }}</td>
+                  <td>{{ a.end_date }}</td>
+                  <td>{{ a.total_days }}</td>
+                  <td class="right">
+                    <button class="btn btn-primary" (click)="decide(a, true)">Approve</button>
+                    <button class="btn btn-danger" (click)="decide(a, false)">Reject</button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      </section>
+    }
+  }
+</div>

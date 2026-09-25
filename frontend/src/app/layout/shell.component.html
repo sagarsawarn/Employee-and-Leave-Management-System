@@ -1,0 +1,86 @@
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">EMS / LMS</div>
+    <nav class="nav">
+      @for (item of nav(); track item.path) {
+        <a
+          class="nav-link"
+          [routerLink]="item.path"
+          routerLinkActive="active"
+        >
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+    <button class="btn btn-danger signout-btn" (click)="logout()">Sign out</button>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="flex items-center gap-2">
+        @if (user(); as u) {
+          <span class="badge badge-approved">{{ u.role }}</span>
+        }
+      </div>
+
+      <!-- Notifications bell -->
+      <div class="notif">
+        <button
+          class="notif-bell"
+          type="button"
+          (click)="togglePanel()"
+          [attr.aria-label]="unreadCount() + ' unread notifications'"
+        >
+          <span class="bell-icon">🔔</span>
+          @if (unreadCount() > 0) {
+            <span class="notif-badge">{{ unreadCount() > 9 ? '9+' : unreadCount() }}</span>
+          }
+        </button>
+
+        @if (panelOpen()) {
+          <div class="notif-panel">
+            <div class="notif-panel-head">
+              <strong>Notifications</strong>
+              @if (unreadCount() > 0) {
+                <button class="notif-markall" type="button" (click)="markAllRead()">
+                  Mark all read
+                </button>
+              }
+            </div>
+
+            @if (notificationList().length === 0) {
+              <div class="notif-empty text-muted">No notifications yet.</div>
+            } @else {
+              <ul class="notif-list">
+                @for (n of notificationList(); track n.id) {
+                  <li
+                    class="notif-item"
+                    [class.unread]="n.is_read === 0"
+                    [class.clickable]="n.reference_type !== null"
+                    (click)="openNotification(n)"
+                  >
+                    @if (n.title) {
+                      <div class="notif-title">{{ n.title }}</div>
+                    }
+                    <div class="notif-msg">{{ n.message }}</div>
+                    <div class="notif-time text-muted">{{ n.created_at }}</div>
+                  </li>
+                }
+              </ul>
+              @if (hasMore()) {
+                <button class="notif-more" type="button" (click)="loadMore()">
+                  Load more
+                </button>
+              }
+            }
+          </div>
+        }
+      </div>
+    </header>
+
+    <main class="content">
+      <!-- Active child route renders here -->
+      <router-outlet />
+    </main>
+  </div>
+</div>
