@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["angular:styles/component:css;620e3e3c74bac6773b64d1ae2483a7b94d0dd7cf37d5f03b323125b9c017e6ae;C:/xampp/htdocs/Employee Management/frontend/src/app/shared/components/spinner.component.ts"],
-  "sourcesContent": ["\n      .spinner-wrap {\n        display: inline-flex;\n        align-items: center;\n        gap: 8px;\n        color: var(--color-muted);\n      }\n      .spinner {\n        width: 18px;\n        height: 18px;\n        border: 2px solid var(--color-border);\n        border-top-color: var(--color-primary);\n        border-radius: 50%;\n        animation: spin 0.7s linear infinite;\n      }\n      .spinner-label {\n        font-size: 0.9rem;\n      }\n      @keyframes spin {\n        to {\n          transform: rotate(360deg);\n        }\n      }\n    "],
-  "mappings": ";AACM,CAAC;AACC,WAAS;AACT,eAAa;AACb,OAAK;AACL,SAAO,IAAI;AACb;AACA,CAAC;AACC,SAAO;AACP,UAAQ;AACR,UAAQ,IAAI,MAAM,IAAI;AACtB,oBAAkB,IAAI;AACtB,iBAAe;AACf,aAAW,KAAK,KAAK,OAAO;AAC9B;AACA,CAAC;AACC,aAAW;AACb;AACA,WALa;AAMX;AACE,eAAW,OAAO;AACpB;AACF;",
-  "names": []
-}

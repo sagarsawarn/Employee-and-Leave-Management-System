@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["angular:styles/component:css;91fbf9487eaa7836af75dff78799314a855e09f0a42842fe2e082135c5bac32f;C:/xampp/htdocs/Employee Management/frontend/src/app/shared/components/empty-state.component.ts"],
-  "sourcesContent": ["\n      .empty {\n        text-align: center;\n        padding: var(--space-6) var(--space-4);\n        color: var(--color-muted);\n      }\n      .empty-title {\n        font-weight: 600;\n        color: var(--color-text);\n        margin-bottom: var(--space-1);\n      }\n      .empty-message {\n        margin: 0 0 var(--space-4);\n        font-size: 0.9rem;\n      }\n    "],
-  "mappings": ";AACM,CAAC;AACC,cAAY;AACZ,WAAS,IAAI,WAAW,IAAI;AAC5B,SAAO,IAAI;AACb;AACA,CAAC;AACC,eAAa;AACb,SAAO,IAAI;AACX,iBAAe,IAAI;AACrB;AACA,CAAC;AACC,UAAQ,EAAE,EAAE,IAAI;AAChB,aAAW;AACb;",
-  "names": []
-}

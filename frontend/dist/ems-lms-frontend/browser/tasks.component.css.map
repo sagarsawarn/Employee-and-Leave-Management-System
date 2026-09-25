@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/features/tasks/tasks.component.scss"],
-  "sourcesContent": [".tasks-header {\r\n  display: flex;\r\n  align-items: flex-start;\r\n  justify-content: space-between;\r\n  gap: var(--space-4);\r\n  margin-bottom: var(--space-4);\r\n}\r\n\r\n.task-form-card { margin-bottom: var(--space-5); }\r\n.task-form { display: grid; gap: var(--space-3); }\r\n.table-card { padding: 0; overflow-x: auto; }\r\n.actions-col { white-space: nowrap; }\r\n.state { padding: var(--space-6); text-align: center; }"],
-  "mappings": ";AAAA,CAAA;AACE,WAAA;AACA,eAAA;AACA,mBAAA;AACA,OAAA,IAAA;AACA,iBAAA,IAAA;;AAGF,CAAA;AAAkB,iBAAA,IAAA;;AAClB,CAAA;AAAa,WAAA;AAAe,OAAA,IAAA;;AAC5B,CAAA;AAAc,WAAA;AAAY,cAAA;;AAC1B,CAAA;AAAe,eAAA;;AACf,CAAA;AAAS,WAAA,IAAA;AAAyB,cAAA;;",
-  "names": []
-}

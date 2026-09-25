@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["angular:styles/component:css;83470e2af081dd2448dc3edbcb6169f51f39c7783bb995a44ad3b716d04c0618;C:/xampp/htdocs/Employee Management/frontend/src/app/shared/components/alert.component.ts"],
-  "sourcesContent": ["\n      .alert {\n        padding: var(--space-3);\n        border-radius: var(--radius);\n        font-size: 0.9rem;\n        border: 1px solid transparent;\n      }\n      .alert-success {\n        background: #dcfce7;\n        color: var(--color-success);\n        border-color: #bbf7d0;\n      }\n      .alert-error {\n        background: #fee2e2;\n        color: var(--color-danger);\n        border-color: #fecaca;\n      }\n      .alert-info {\n        background: #dbeafe;\n        color: var(--color-primary);\n        border-color: #bfdbfe;\n      }\n      .alert-warning {\n        background: #fef3c7;\n        color: var(--color-warning);\n        border-color: #fde68a;\n      }\n    "],
-  "mappings": ";AACM,CAAC;AACC,WAAS,IAAI;AACb,iBAAe,IAAI;AACnB,aAAW;AACX,UAAQ,IAAI,MAAM;AACpB;AACA,CAAC;AACC,cAAY;AACZ,SAAO,IAAI;AACX,gBAAc;AAChB;AACA,CAAC;AACC,cAAY;AACZ,SAAO,IAAI;AACX,gBAAc;AAChB;AACA,CAAC;AACC,cAAY;AACZ,SAAO,IAAI;AACX,gBAAc;AAChB;AACA,CAAC;AACC,cAAY;AACZ,SAAO,IAAI;AACX,gBAAc;AAChB;",
-  "names": []
-}
